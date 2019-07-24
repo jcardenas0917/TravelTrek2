@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index 1</title>
+</head>
+
+<body>
+    <form id="user">
+        Search The Web:
+        <input type="text" id="search" /><br>
+        <button type="button" class="btn btn-success" id="submit">Search The Web</button>
+        <button type="button" class="btn btn-success" id="submitImage">Search Image</button>
+        <button type="button" class="btn btn-success" id="submitVideo">Search Videos</button>
+    </form>
+    <div id="result">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+
+        $("#submit").on("click", function (event) {
+
+
+            //API USED Contextualwebsearch
+
+            var key = "b14dbd97f0mshf7537a54edf57f0p1465bcjsnbd9981adabe8"
+            var host = "contextualwebsearch-websearch-v1.p.rapidapi.com"
+            var search = $("#search").val();
+            var queryURL = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI?autoCorrect=true&pageNumber=1&pageSize=10&q=" + search + "&safeSearch=false";
+            
+            console.log(host);
+            console.log(key);
+            $.ajax({
+                method: "GET",
+                url: queryURL,
+                headers: {
+                    "X-RapidAPI-Key": key,
+                    "X-RapidAPI-Host": host
+                },
+
+            }).then(function (response) {
+                console.log(queryURL);
+                console.log(response.value)
+                var results = response.value;
+                // Looping through each result item
+                for (var i = 0; i < results.length; i++) {
+
+                    // Creating and storing a div tag
+                    var displayDiv = $("<div>");
+
+                    // Creating a paragraph tag with the result item's rating
+                    var p1 = $("<p>").text("Title: " + results[i].body);
+                    var p2 = $("<a>").text("URL: " + results[i].url);
+
+                    // Creating and storing an image tag
+                    var resultImage = $("<img>");
+                    // Setting the src attribute of the image to a property pulled off the result item
+                    resultImage.attr("src", results[i].image.url);
+
+                    // Appending the paragraph and image tag 
+                    displayDiv.append(resultImage);
+                    displayDiv.append(p1);
+                    displayDiv.append(p2);
+                    
+
+                    $("#result").prepend(displayDiv);
+
+                }
+            });
+
+        });
+
+        //API USED pixabay
+
+        $("#submitImage").on("click", function (event) {
+            var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
+            var imageSearch = $("#search").val();;
+            var queryImageURL = "https://pixabay.com/api/?key=" + imgKey + "&q=" + imageSearch + "&image_type=photo"
+            console.log(imageSearch)
+            console.log(queryImageURL)
+            $.ajax({
+                method: "GET",
+                url: queryImageURL,
+
+            }).then(function (response) {
+                console.log(response)
+                var results = response.hits;
+                console.log(results)
+                // Looping through each result item
+                for (var i = 0; i < results.length; i++) {
+
+                    // Creating and storing a div tag
+                    var displayDiv = $("<div>");
+
+                    // Creating a paragraph tag with the result item's rating
+                    var p = $("<p>").text("downloads: " + results[i].views);
+
+                    // Creating and storing an image tag
+                    var resultImage = $("<img>");
+                    // Setting the src attribute of the image to a property pulled off the result item
+                    resultImage.attr("src", results[i].webformatURL);
+
+                    // Appending the paragraph and image tag 
+                    displayDiv.append(p);
+                    displayDiv.append(resultImage);
+
+                    $("#result").prepend(displayDiv);
+
+                }
+
+            });
+        });
+
+
+        $("#submitVideo").on("click", function (event) {
+            var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
+            var videoSearch = $("#search").val();;
+            var queryImageURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch
+            console.log(videoSearch)
+            console.log(queryImageURL)
+            $.ajax({
+                method: "GET",
+                url: queryImageURL,
+
+            }).then(function (response) {
+                console.log(response)
+                var results = response.hits;
+                console.log(results)
+                // Looping through each result item
+                for (var i = 0; i < results.length; i++) {
+
+                    // Creating and storing a div tag
+                    var displayDiv = $("<div>");
+
+                    // Creating a paragraph tag with the result item's rating
+                    var p = $("<p>").text("downloads: " + results[i].views);
+
+                    // Creating and storing an image tag
+                    var resultVideo = $("<iframe>");
+                    // Setting the src attribute of the image to a property pulled off the result item
+                    resultVideo.attr("src", results[i].videos.small.url);
+
+                    // Appending the paragraph and image tag 
+                    displayDiv.append(p);
+                    displayDiv.append(resultVideo);
+
+                    $("#result").prepend(displayDiv);
+
+                }
+
+            });
+        });
+
+    </script>
+</body>
+
+</html>

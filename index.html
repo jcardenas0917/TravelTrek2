@@ -10,11 +10,12 @@
 
 <body>
     <form id="user">
-        Search The Web:
+        Search:
         <input type="text" id="search" /><br>
-        <button type="button" class="btn btn-success" id="submit">Search The Web</button>
+        <button type="button" class="btn btn-success" id="submit">Trending</button>
         <button type="button" class="btn btn-success" id="submitImage">Search Image</button>
         <button type="button" class="btn btn-success" id="submitVideo">Search Videos</button>
+        <button type="button" class="btn btn-success" id="submitPlaces">Search Places</button>
     </form>
     <div id="result">
 
@@ -25,7 +26,7 @@
 
 
         $("#submit").on("click", function (event) {
-
+            $("#result").empty();
 
             //API USED Contextualwebsearch
 
@@ -33,7 +34,7 @@
             var host = "contextualwebsearch-websearch-v1.p.rapidapi.com"
             var search = $("#search").val();
             var queryURL = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI?autoCorrect=true&pageNumber=1&pageSize=10&q=" + search + "&safeSearch=false";
-            
+            var topSearches = $("<p>").text("Top Searches for " + search + " are:");
             console.log(host);
             console.log(key);
             $.ajax({
@@ -55,32 +56,70 @@
                     var displayDiv = $("<div>");
 
                     // Creating a paragraph tag with the result item's rating
-                    var p1 = $("<p>").text("Title: " + results[i].body);
-                    var p2 = $("<a>").text("URL: " + results[i].url);
+                    var p2 = $("<p>").text("Source: " + results[i].provider.name);
+                    var p3 = $("<p>").text("Title: " + results[i].body);
+                    var p = $("<a>").attr("href", results[i].url).text("URL " + results[i].url);
 
-                    // Creating and storing an image tag
-                    var resultImage = $("<img>");
-                    // Setting the src attribute of the image to a property pulled off the result item
-                    resultImage.attr("src", results[i].image.url);
-
-                    // Appending the paragraph and image tag 
-                    displayDiv.append(resultImage);
-                    displayDiv.append(p1);
                     displayDiv.append(p2);
-                    
+                    displayDiv.append(p3);
+                    displayDiv.append(p);
+
 
                     $("#result").prepend(displayDiv);
+                    // $("#search").val("");
 
                 }
             });
 
+            //Top Searches AutoComplete API USED Contextualwebsearch
+            var queryAuto = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/spelling/AutoComplete?text=" + search
+
+            $.ajax({
+                method: "GET",
+                url: queryAuto,
+                headers: {
+                    "X-RapidAPI-Key": key,
+                    "X-RapidAPI-Host": host
+                },
+
+            }).then(function (response) {
+                console.log(queryAuto);
+                console.log(response)
+
+
+                // Looping through each result item
+                for (var i = 0; i < response.length; i++) {
+
+                    // Creating and storing a div tag
+                    var displayDiv = $("<div>");
+
+                    // Creating a paragraph tag with the result item's rating
+
+                    var p2 = $("<p>").text(response[i]);
+
+
+                    displayDiv.append(topSearches);
+                    displayDiv.append(p2);
+
+
+
+                    $("#result").prepend(displayDiv);
+                    // $("#search").val("");
+                }
+
+            });
         });
 
-        //API USED pixabay
+
+
+        //API USED pixabay free images by thousands of users online
 
         $("#submitImage").on("click", function (event) {
+
+            $("#result").empty();
+
             var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
-            var imageSearch = $("#search").val();;
+            var imageSearch = $("#search").val();
             var queryImageURL = "https://pixabay.com/api/?key=" + imgKey + "&q=" + imageSearch + "&image_type=photo"
             console.log(imageSearch)
             console.log(queryImageURL)
@@ -111,16 +150,20 @@
                     displayDiv.append(resultImage);
 
                     $("#result").prepend(displayDiv);
+                    // $("#search").val("");
 
                 }
 
             });
         });
 
-
+        //API USED pixabay free videos by thousands of users online
         $("#submitVideo").on("click", function (event) {
+
+            $("#result").empty();
+
             var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
-            var videoSearch = $("#search").val();;
+            var videoSearch = $("#search").val();
             var queryImageURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch
             console.log(videoSearch)
             console.log(queryImageURL)
@@ -151,12 +194,62 @@
                     displayDiv.append(resultVideo);
 
                     $("#result").prepend(displayDiv);
+                    // $("#search").val("");
 
                 }
 
             });
         });
 
+
+        $("#submitPlaces").on("click", function (event) {
+
+        $("#result").empty();
+        var latitude = localStorage.getItem("latitude");
+        var longitude =localStorage.getItem("longitude");
+
+        console.log(latitude)
+        console.log(longitude)
+
+        var places = $("#search").val();
+        var googleKey ="AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
+        // var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?input="+places+"&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key="+googleKey;
+        var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+latitude+","+longitude+"&radius=3000&type="+places+"&keyword=macdonalds&key="+googleKey;
+        var replace = google.replace(" ","%20");
+               console.log(replace)
+               
+                $.ajax({
+                method: "GET",
+                url: replace,
+
+            }).then(function (response) {
+                console.log(response)
+                
+            });
+
+        });
+
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.watchPosition(showPosition);
+    }
+  }
+function showPosition(position)
+  {
+   var lat = position.coords.latitude;
+   var lon = position.coords.longitude; 
+   
+
+    localStorage.clear();
+
+      // Store all content into localStorage
+      localStorage.setItem("latitude", lat);
+      localStorage.setItem("longitude", lon);
+  }
+  getLocation()
+    
     </script>
 </body>
 

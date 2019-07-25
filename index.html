@@ -205,6 +205,8 @@
         $("#submitPlaces").on("click", function (event) {
 
         $("#result").empty();
+        getLocation()
+        
         var latitude = localStorage.getItem("latitude");
         var longitude =localStorage.getItem("longitude");
 
@@ -214,7 +216,7 @@
         var places = $("#search").val();
         var googleKey ="AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
         // var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?input="+places+"&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key="+googleKey;
-        var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+latitude+","+longitude+"&radius=3000&type="+places+"&keyword=macdonalds&key="+googleKey;
+        var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+latitude+","+longitude+"&radius=8000&type="+places+"&key="+googleKey;
         var replace = google.replace(" ","%20");
                console.log(replace)
                
@@ -248,8 +250,7 @@ function showPosition(position)
       localStorage.setItem("latitude", lat);
       localStorage.setItem("longitude", lon);
   }
-  getLocation()
-    
+  
     </script>
 </body>
 

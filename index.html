@@ -13,9 +13,9 @@
         Search:
         <input type="text" id="search" /><br>
         <button type="button" class="btn btn-success" id="submit">Trending</button>
-        <button type="button" class="btn btn-success" id="submitImage">Search Image</button>
-        <button type="button" class="btn btn-success" id="submitVideo">Search Videos</button>
-        <button type="button" class="btn btn-success" id="submitPlaces">Search Places</button>
+        <button type="button" class="btn btn-success" id="submitImage">Images</button>
+        <button type="button" class="btn btn-success" id="submitVideo">Videos</button>
+        <button type="button" class="btn btn-success" id="submitPlaces">Places</button>
     </form>
     <div id="result">
 
@@ -23,96 +23,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-
+        
+        //start click event to call the google costum search API
+        //This API searches through specific site related to Social Media, news and travel
 
         $("#submit").on("click", function (event) {
+
             $("#result").empty();
 
-            //API USED Contextualwebsearch
-
-            var key = "b14dbd97f0mshf7537a54edf57f0p1465bcjsnbd9981adabe8"
-            var host = "contextualwebsearch-websearch-v1.p.rapidapi.com"
-            var search = $("#search").val();
-            var queryURL = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI?autoCorrect=true&pageNumber=1&pageSize=10&q=" + search + "&safeSearch=false";
-            var topSearches = $("<p>").text("Top Searches for " + search + " are:");
-            console.log(host);
-            console.log(key);
+            var searchInput = $("#search").val();
+            var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
+            var googleSearch = "https://www.googleapis.com/customsearch/v1?key=" + googleKey + "&cx=015376139325119918930:8q0hmzh1doi&q=" + searchInput
+            var replace = googleSearch.replace(" ", "%20");
+            console.log(replace)
+            //Ajax call to get data
             $.ajax({
                 method: "GET",
-                url: queryURL,
-                headers: {
-                    "X-RapidAPI-Key": key,
-                    "X-RapidAPI-Host": host
-                },
+                url: replace,
 
             }).then(function (response) {
-                console.log(queryURL);
-                console.log(response.value)
-                var results = response.value;
-                // Looping through each result item
+                console.log(response)
+                console.log(response.items)
+                results = response.items;
                 for (var i = 0; i < results.length; i++) {
 
                     // Creating and storing a div tag
                     var displayDiv = $("<div>");
 
                     // Creating a paragraph tag with the result item's rating
-                    var p2 = $("<p>").text("Source: " + results[i].provider.name);
-                    var p3 = $("<p>").text("Title: " + results[i].body);
-                    var p = $("<a>").attr("href", results[i].url).text("URL " + results[i].url);
+                    var link = $("<a>").attr("href", results[i].formattedUrl).text("URL " + results[i].displayLink);
+                    var title = $("<h3>").text(results[i].title);
+                    var snip = $("<p>").text(results[i].snippet);
 
-                    displayDiv.append(p2);
-                    displayDiv.append(p3);
-                    displayDiv.append(p);
+                    // Appending the paragraph and image tag 
 
-
-                    $("#result").prepend(displayDiv);
-                    // $("#search").val("");
-
-                }
-            });
-
-            //Top Searches AutoComplete API USED Contextualwebsearch
-            var queryAuto = "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/spelling/AutoComplete?text=" + search
-
-            $.ajax({
-                method: "GET",
-                url: queryAuto,
-                headers: {
-                    "X-RapidAPI-Key": key,
-                    "X-RapidAPI-Host": host
-                },
-
-            }).then(function (response) {
-                console.log(queryAuto);
-                console.log(response)
-
-
-                // Looping through each result item
-                for (var i = 0; i < response.length; i++) {
-
-                    // Creating and storing a div tag
-                    var displayDiv = $("<div>");
-
-                    // Creating a paragraph tag with the result item's rating
-
-                    var p2 = $("<p>").text(response[i]);
-
-
-                    displayDiv.append(topSearches);
-                    displayDiv.append(p2);
-
-
+                    displayDiv.append(title);
+                    displayDiv.append(snip);
+                    displayDiv.append(link);
 
                     $("#result").prepend(displayDiv);
-                    // $("#search").val("");
+
+                    //         
                 }
 
-            });
+            })
         });
 
 
-
-        //API USED pixabay free images by thousands of users online
+//API USED pixabay free images by thousands of users online
+//This API allow the user so find photos by local or turist in high def unlike random pictues.
 
         $("#submitImage").on("click", function (event) {
 
@@ -138,7 +97,10 @@
                     var displayDiv = $("<div>");
 
                     // Creating a paragraph tag with the result item's rating
-                    var p = $("<p>").text("downloads: " + results[i].views);
+                    var downloads = $("<p>").text("downloads: " + results[i].views);
+                    var link = $("<a>").attr("href", results[i].pageURL).text("URL " + results[i].pageURL);
+
+
 
                     // Creating and storing an image tag
                     var resultImage = $("<img>");
@@ -146,16 +108,19 @@
                     resultImage.attr("src", results[i].webformatURL);
 
                     // Appending the paragraph and image tag 
-                    displayDiv.append(p);
                     displayDiv.append(resultImage);
+                    displayDiv.append(downloads);
+                    displayDiv.append(link);
+
 
                     $("#result").prepend(displayDiv);
-                    // $("#search").val("");
+                    
 
                 }
 
             });
         });
+
 
         //API USED pixabay free videos by thousands of users online
         $("#submitVideo").on("click", function (event) {
@@ -182,7 +147,7 @@
                     var displayDiv = $("<div>");
 
                     // Creating a paragraph tag with the result item's rating
-                    var p = $("<p>").text("downloads: " + results[i].views);
+                    var downloads = $("<p>").text("downloads: " + results[i].views);
 
                     // Creating and storing an image tag
                     var resultVideo = $("<iframe>");
@@ -190,7 +155,7 @@
                     resultVideo.attr("src", results[i].videos.small.url);
 
                     // Appending the paragraph and image tag 
-                    displayDiv.append(p);
+                    displayDiv.append(downloads);
                     displayDiv.append(resultVideo);
 
                     $("#result").prepend(displayDiv);
@@ -201,56 +166,93 @@
             });
         });
 
+        // Using the Google API Places and the Geolocation API to find places 5 miles radius from the user
 
         $("#submitPlaces").on("click", function (event) {
 
-        $("#result").empty();
-        getLocation()
-        
-        var latitude = localStorage.getItem("latitude");
-        var longitude =localStorage.getItem("longitude");
+            $("#result").empty();
+            getLocation()
+            //stores latitute and longitude from the local storage
+            var latitude = localStorage.getItem("latitude");
+            var longitude = localStorage.getItem("longitude");
 
-        console.log(latitude)
-        console.log(longitude)
+            console.log(latitude)
+            console.log(longitude)
 
-        var places = $("#search").val();
-        var googleKey ="AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
-        // var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?input="+places+"&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key="+googleKey;
-        var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+latitude+","+longitude+"&radius=8000&type="+places+"&key="+googleKey;
-        var replace = google.replace(" ","%20");
-               console.log(replace)
-               
-                $.ajax({
+            var places = $("#search").val();
+            var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
+            var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + "," + longitude + "&radius=8000&keyword=" + places + "&key=" + googleKey;
+
+
+            var replace = google.replace(" ", "%20");
+            console.log(replace)
+
+            $.ajax({
                 method: "GET",
                 url: replace,
 
             }).then(function (response) {
                 console.log(response)
-                
+                console.log(response.results)
+                var places = response.results
+
+                for (var i = 0; i < places.length; i++) {
+
+                    // Creating and storing a div tag
+                    var displayDiv = $("<div>");
+
+                    // Creating a paragraph tag with the result item's rating
+                    var name = $("<h3>").text("Name: " + places[i].name);
+                    
+                    //displays if the location is open or closed.
+                    if (places[i].opening_hours.open_now) {
+                        var open = $("<p>").text("Open Now");
+                    } else {
+                        var open = $("<p>").text("Closed Now");
+                    }
+                    var rating = $("<p>").text("Rating: " + places[i].rating);
+                    var type = $("<p>").text("Type: " + places[i].types[0] + " " + places[i].types[1]);
+                    var address = $("<p>").text("Adress: " + places[i].vicinity);
+
+
+
+                    // Appending the paragraph and image tag 
+                    displayDiv.append(name);
+                    displayDiv.append(open);
+                    displayDiv.append(rating);
+                    displayDiv.append(type);
+                    displayDiv.append(address);
+
+                    $("#result").prepend(displayDiv);
+                    
+
+                }
             });
 
         });
 
-function getLocation()
-  {
-  if (navigator.geolocation)
-    {
-    navigator.geolocation.watchPosition(showPosition);
-    }
-  }
-function showPosition(position)
-  {
-   var lat = position.coords.latitude;
-   var lon = position.coords.longitude; 
-   
 
-    localStorage.clear();
+        //Getlocation function to find user's Geo Location then store in the browser local storage
+        //This will allow the app to show user locations within the user's radius.
 
-      // Store all content into localStorage
-      localStorage.setItem("latitude", lat);
-      localStorage.setItem("longitude", lon);
-  }
-  
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(showPosition);
+            }
+        }
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+
+            localStorage.clear();
+
+            // Store all content into localStorage
+            localStorage.setItem("latitude", lat);
+            localStorage.setItem("longitude", lon);
+        }
+
+
     </script>
 </body>
 

@@ -88,7 +88,7 @@ $("#imageButton").on("click", function (event) {
           
             
             $("#result").append(displayDiv);
-
+            
 
         }
 

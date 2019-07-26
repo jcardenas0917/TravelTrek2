@@ -5,6 +5,7 @@ $(document).ready(function () {
 $("#trendingButton").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
+    // $("#jumbo").hide()
 
     var searchInput = $("#search").val();
     var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
@@ -51,6 +52,7 @@ $("#trendingButton").on("click", function (event) {
 $("#imageButton").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
+    // $("#jumbo").hide()
 
     var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var imageSearch = $("#search").val();
@@ -69,25 +71,22 @@ $("#imageButton").on("click", function (event) {
         for (var i = 0; i < results.length; i++) {
 
             // Creating and storing a div tag
-            var displayDiv = $("<div>");
-
+            var displayDiv = $("<div>").attr("class","display");
+            
             // Creating a paragraph tag with the result item's rating
-            var downloads = $("<p>").text("downloads: " + results[i].views).attr("class","downloads");
-            var link = $("<a>").attr("href", results[i].pageURL).text("URL " + results[i].pageURL).attr("class","imageLink");
-
-
+            var caption = $("<a>").attr("href", results[i].pageURL).text("Photo Information").attr("class","caption")
 
             // Creating and storing an image tag
-            var resultImage = $("<img>");
+            var resultImage = $("<img>").attr("class","images").width(400).height(200);
             // Setting the src attribute of the image to a property pulled off the result item
             resultImage.attr("src", results[i].webformatURL);
+           
 
             // Appending the paragraph and image tag 
             displayDiv.append(resultImage);
-            displayDiv.append(downloads);
-            displayDiv.append(link);
-
-
+            displayDiv.append(caption);
+          
+            
             $("#result").append(displayDiv);
 
 
@@ -97,10 +96,12 @@ $("#imageButton").on("click", function (event) {
 });
 
 
+
 //API USED pixabay free videos by thousands of users online
 $("#videoButton").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
+    // $("#jumbo").hide()
 
     var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var videoSearch = $("#search").val();
@@ -121,16 +122,12 @@ $("#videoButton").on("click", function (event) {
             // Creating and storing a div tag
             var displayDiv = $("<div>");
 
-            // Creating a paragraph tag with the result item's rating
-            var downloads = $("<p>").text("downloads: " + results[i].views);
-
             // Creating and storing an image tag
-            var resultVideo = $("<iframe>");
+            var resultVideo = $("<iframe>").attr("class","videos");
             // Setting the src attribute of the image to a property pulled off the result item
             resultVideo.attr("src", results[i].videos.small.url);
 
             // Appending the paragraph and image tag 
-            displayDiv.append(downloads);
             displayDiv.append(resultVideo);
 
             $("#result").append(displayDiv);
@@ -146,7 +143,11 @@ $("#videoButton").on("click", function (event) {
 $("#placesButton").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
+    // $("#jumbo").hide()
+
     getLocation()
+
+   
     //stores latitute and longitude from the local storage
     var latitude = localStorage.getItem("latitude");
     var longitude = localStorage.getItem("longitude");
@@ -171,35 +172,45 @@ $("#placesButton").on("click", function (event) {
         console.log(response.results)
         var places = response.results
 
+        
+        var tableDisplay =$("<table>").attr("id","displayTable");
+        var trHeader = $("<tr>").attr("id","trHeader");
+        var nameCol=$("<th>").text("Name").attr("id","name");
+        var ratingCol=$("<th>").text("Rating").attr("id","rating");
+        var typeCol=$("<th>").text("Type").attr("id","type");
+        var addressCol=$("<th>").text("Address").attr("id","address");
+        trHeader.append(nameCol,ratingCol,typeCol,addressCol);
+        tableDisplay.append(trHeader);
+        // displayDiv.append(tableDisplay);
+        $("#result").append(tableDisplay)
+    
+           
         for (var i = 0; i < places.length; i++) {
 
             // Creating and storing a div tag
-            var displayDiv = $("<div>");
-
+            
+            var tBody=$("#displayTable");
+            var tRow = $("<tr>");
             // Creating a paragraph tag with the result item's rating
-            var name = $("<h3>").text("Name: " + places[i].name);
-
-            //displays if the location is open or closed.
-            if (places[i].opening_hours.open_now) {
-                var open = $("<p>").text("Open Now");
-            } else {
-                var open = $("<p>").text("Closed Now");
-            }
-            var rating = $("<p>").text("Rating: " + places[i].rating);
-            var type = $("<p>").text("Type: " + places[i].types[0] + " " + places[i].types[1]);
-            var address = $("<p>").text("Adress: " + places[i].vicinity);
+            var name = $("<td>").text(places[i].name);
+            
+            
+            var rating = $("<td>").text(places[i].rating);
+            var type = $("<td>").text(places[i].types[0] + " " + places[i].types[1]);
+            var address = $("<td>").text(places[i].vicinity);
 
 
-
+            tRow.append(name,rating,type,address);
             // Appending the paragraph and image tag 
-            displayDiv.append(name);
-            displayDiv.append(open);
-            displayDiv.append(rating);
-            displayDiv.append(type);
-            displayDiv.append(address);
+            // displayDiv.append(name);
+            // displayDiv.append(open);
+            // displayDiv.append(rating);
+            // displayDiv.append(type);
+            // displayDiv.append(address);
 
-            $("#result").append(displayDiv);
-
+            // $("#result").append(displayDiv);
+            tBody.append(tRow);
+            $("#result").append(tableDisplay)
 
         }
     });

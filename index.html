@@ -12,11 +12,13 @@
     <title>App</title>
 </head>
 
+
+
+
 <body>
 
 
-
-    <div class="col-lg-12">
+    <div class="fixed-top">
         <nav class="navbar navbar-light bg-light">
             <a class="navbar-brand">Navbar</a>
             <form class="form-inline">
@@ -25,38 +27,43 @@
             </form>
         </nav>
 
-
-    <div class="container">
-        <div class="row">
-            <div class="jumbotron text-center col-lg-12">
-
-                <h1 class="display-4">My Project</h1>
-                <p class="lead">This is the greatest app in the world!</p>
-                <hr class="my-4">
-                <p></p>
-
-                <form id="user">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="search" placeholder="Search Here"
-                            aria-label='Type Here' aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2"></span>
-                        </div>
-                    </div>
-
-
-                    <button class="btn btn-primary" type="submit" id="trendingButton">Trending</button>
-                    <button class="btn btn-primary" type="submit" id=imageButton>Images</button>
-                    <button class="btn btn-primary" type="submit" id=videoButton>Videos</button>
-                    <button class="btn btn-primary" type="submit" id=placesButton>Places</button>
-                </form>
-            </div>
-        </div>
     </div>
 
 
-    <div id="result">
 
+    <div class="jumbotron text-center"id = "jumbo">
+
+
+        <h1 class="display-4">My Project</h1>
+        <p class="lead">This is the greatest app in the world!</p>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col-lg-4">
+
+            </div>
+            <div class="input-group mb-3 col-lg-4">
+
+                <input type="text" class="form-control" id="search" placeholder="Search Here">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit" id="trendingButton">Trending</button>
+        <button class="btn btn-primary" type="submit" id=imageButton>Images</button>
+        <button class="btn btn-primary" type="submit" id=videoButton>Videos</button>
+        <button class="btn btn-primary" type="submit" id=placesButton>Places</button>
+
+
+    </div>
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+        <div id="result" class="col-lg-9">
+        </div>
+        <div class="col-lg-2" id = "recentSearch">
+            <h2>Recent Searches</h2>
+
+        </div>
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>

@@ -67,6 +67,13 @@ $("#imageButton").on("click", function (event) {
         console.log(response)
         var results = response.hits;
         console.log(results)
+
+
+        //Check if there are no results in search
+        if (response.total === 0) {
+            $("#result").text("Sorry Not Results Found")
+        } else {
+
         // Looping through each result item
         for (var i = 0; i < results.length; i++) {
 
@@ -91,11 +98,9 @@ $("#imageButton").on("click", function (event) {
             
 
         }
-
+    }
     });
 });
-
-
 
 //API USED pixabay free videos by thousands of users online
 $("#videoButton").on("click", function (event) {
@@ -116,6 +121,12 @@ $("#videoButton").on("click", function (event) {
         console.log(response)
         var results = response.hits;
         console.log(results)
+
+    //Check if there are no results in search
+        if (response.total===0){
+            $("#result").text("Sorry Not Results Found")
+        } else {
+
         // Looping through each result item
         for (var i = 0; i < results.length; i++) {
 
@@ -134,7 +145,7 @@ $("#videoButton").on("click", function (event) {
             // $("#search").val("");
 
         }
-
+    }
     });
 });
 
@@ -172,6 +183,12 @@ $("#placesButton").on("click", function (event) {
         console.log(response.results)
         var places = response.results
 
+        //Check if there are no results in search
+        if (response.status === "ZERO_RESULTS"){
+            
+            $("#result").text("Sorry Not Results Found")
+        }  else {
+        
         
         var tableDisplay =$("<table>").attr("id","displayTable");
         var trHeader = $("<tr>").attr("id","trHeader");
@@ -201,21 +218,17 @@ $("#placesButton").on("click", function (event) {
 
 
             tRow.append(name,rating,type,address);
-            // Appending the paragraph and image tag 
-            // displayDiv.append(name);
-            // displayDiv.append(open);
-            // displayDiv.append(rating);
-            // displayDiv.append(type);
-            // displayDiv.append(address);
-
+            
             // $("#result").append(displayDiv);
             tBody.append(tRow);
             $("#result").append(tableDisplay)
 
         }
+    }
     });
 
 });
+
 
 
 //Getlocation function to find user's Geo Location then store in the browser local storage

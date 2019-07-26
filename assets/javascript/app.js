@@ -74,7 +74,7 @@ $("#imageButton").on("click", function (event) {
             var displayDiv = $("<div>").attr("class","display");
             
             // Creating a paragraph tag with the result item's rating
-            var caption = $("<a>").attr("href", results[i].pageURL).text("Photo Information").attr("class","caption")
+            var caption = $("<a>").attr("href", results[i].pageURL).text("Photo Information").attr("class","caption").attr("target","blank")
 
             // Creating and storing an image tag
             var resultImage = $("<img>").attr("class","images").width(400).height(200);

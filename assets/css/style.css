@@ -19,6 +19,8 @@ table, td, th, tr {
   }
   .caption{
       display: block;
+      cursor: pointer;
+      text-align: center;
   }
   .display{
       float:left;

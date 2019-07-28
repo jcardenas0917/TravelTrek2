@@ -209,7 +209,7 @@ function pushData() {
     database.ref().set({
         clickCount: clickCounter
     });
-
+    visitor()
 }
 //Shows number of searches
 function visitor() {
@@ -248,7 +248,7 @@ $("#trendingButton").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
+   
     var searchInput = $("#search").val();
     if (searchInput === "") {
         var error = $("<h1>").text("Please enter a search term").attr("id", "error");
@@ -274,7 +274,6 @@ $("#imageButton").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
 
     var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var imageSearch = $("#search").val();
@@ -300,7 +299,6 @@ $("#videoButton").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
 
     var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var videoSearch = $("#search").val();
@@ -325,7 +323,6 @@ $("#placesButton").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
     getLocation()
 
     //stores latitute and longitude from the local storage
@@ -350,7 +347,7 @@ $("#placesButton").on("click", function (event) {
 
 
 
-//NAV MENU CODE  HAD TO CALL THE API'S AGAIN IN ORDER TO NO CONFLIFT WITH THE FIRST SET OF BUTTONS AND SEARCH BAR
+//NAV MENU CODE  HAD TO CALL THE API'S AGAIN IN ORDER TO NO CONFLICT WITH THE FIRST SET OF BUTTONS AND SEARCH BAR
 //====================================================================================================================
 
 //====================================================================================================================
@@ -360,7 +357,7 @@ $("#trendingButton2").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
+
     var searchInput = $("#search2").val();
     var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
     var googleSearch = "https://www.googleapis.com/customsearch/v1?key=" + googleKey + "&cx=015376139325119918930:8q0hmzh1doi&q=" + searchInput
@@ -378,7 +375,6 @@ $("#imageButton2").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
 
     var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var imageSearch = $("#search2").val();
@@ -394,8 +390,6 @@ $("#videoButton2").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
-
     var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var videoSearch = $("#search2").val();
     var queryVideoURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch
@@ -412,7 +406,6 @@ $("#placesButton2").on("click", function (event) {
     $("#result").empty();
     // Number of times the page has been researched
     pushData()
-    visitor();
     getLocation()
 
     //stores latitute and longitude from the local storage

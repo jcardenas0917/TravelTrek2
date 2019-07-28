@@ -15,17 +15,18 @@
 
 table, td, th, tr {
     border: 1px solid skyblue;
-    
 }
-table{
+
+table {
     margin-left: auto;
     margin-right: auto;
+    width: 300;
 }
-th{
-    background-color:royalblue;
 
-    
+th {
+    background-color: royalblue;
 }
+
 #recentSearch {
     height: 1000px;
     background-color: lightgray;
@@ -40,3 +41,29 @@ th{
 .display {
     float: left;
 }
+
+.newbuttons {
+    margin-left: 1px;
+}
+
+.trend {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#logo {
+    font-family: 'Cormorant Garamond', serif;
+    color: red;
+}
+
+#logo-banner {
+    font-family: 'Cormorant Garamond', serif;
+    color: red;
+    font-size: 70px;
+}
+
+#slogan {
+    font-weight: bold;
+}
+

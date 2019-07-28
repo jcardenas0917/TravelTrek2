@@ -383,7 +383,7 @@ $("#imageButton2").on("click", function (event) {
     var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var imageSearch = $("#search2").val();
     var queryImageURL = "https://pixabay.com/api/?key=" + imgKey + "&q=" + imageSearch + "&image_type=photo"
-    imageAjaxCall();
+    imagesAjaxCall(queryImageURL);
 });
 
 
@@ -398,8 +398,8 @@ $("#videoButton2").on("click", function (event) {
 
     var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var videoSearch = $("#search2").val();
-    var queryImageURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch
-    videosAjaxCall();
+    var queryVideoURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch
+    videosAjaxCall(queryVideoURL);
 
 });
 

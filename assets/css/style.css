@@ -1,74 +1,113 @@
 .jumbotron {
-    margin-top: 70px;
-    background-image: linear-gradient(0deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url("../Images/travel.jpg");
-    background-size: cover;
-    min-height: 40vh;
+  margin-top: 70px;
+  background-image: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.7)
+    ),
+    url("../Images/travel.jpg");
+  background-size: cover;
+  min-height: 40vh;
+  position: relative;
 }
 
 .images {
-    padding: 10px;
+  padding: 10px;
 }
 
 .videos {
-    float: left;
+  float: left;
 }
 
-table, td, th, tr {
-    border: 1px solid skyblue;
+table,
+td,
+th,
+tr {
+  border: 1px solid skyblue;
 }
 
 table {
-    margin-left: auto;
-    margin-right: auto;
-    width: 300;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300;
 }
 
 th {
-    background-color: royalblue;
+  background-color: royalblue;
 }
 
 #recentSearch {
-    height: 1000px;
-    background-color: lightgray;
+  height: 1000px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .caption {
-    display: block;
-    cursor: pointer;
-    text-align: center;
+  display: block;
+  cursor: pointer;
+  text-align: center;
 }
 
 .display {
-    float: left;
+  float: left;
 }
 
 .newbuttons {
-    margin-left: 1px;
+  margin-left: 1px;
 }
 
 .trend {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-family: 'Times New Roman', Times, serif;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: "Times New Roman", Times, serif;
 }
 
 #logo {
-    font-family: 'Cormorant Garamond', serif;
-    color: red;
+  font-family: "Cormorant Garamond", serif;
+  color: red;
+  font-size: 35px;
 }
 
 #logo-banner {
-    font-family: 'Cormorant Garamond', serif;
-    color: red;
-    font-size: 70px;
+  font-family: "Cormorant Garamond", serif;
+  color: red;
+  font-size: 70px;
 }
 
 #slogan {
-    font-weight: bold;
+  font-weight: bold;
 }
-#error{
-    color: red;
-    font-weight: bold;  
-    text-align: center;
+#error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+.material-icons {
+  font-size: 40px;
+  
+}
+#trendingicon {
+  margin-right: 50px;
+}
+#videoicon {
+  margin-left: 30px;
+}
+/* #navBar{
+    display: none;
+} */
+
+.btn {
+  color: #fff;
+  background: red;
+  font-weight: bold;
+  border: 2px solid #fff;
+  font-family: "Times New Roman", Times, serif;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.btn:hover {
+  background: none;
+  color: red;
+  border: 2px solid red;
 }
 

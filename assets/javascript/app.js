@@ -1,18 +1,18 @@
-// Davi's Firebase configuration
+
 var firebaseConfig = {
-    apiKey: "AIzaSyCqNzQgw2Ime4kKdd3YHCd5oajaNlGphnc",
-    authDomain: "test-project-6cfff.firebaseapp.com",
-    databaseURL: "https://test-project-6cfff.firebaseio.com",
-    projectId: "test-project-6cfff",
-    storageBucket: "",
-    messagingSenderId: "583355390777",
-    appId: "1:583355390777:web:d5dfb38807b52297"
+    apiKey: "AIzaSyBps3TF6o-I5N6-YJ4ov3RyoIQ9P5CTMyo",
+    authDomain: "traveltrek-19d5c.firebaseapp.com",
+    databaseURL: "https://traveltrek-19d5c.firebaseio.com",
+    projectId: "traveltrek-19d5c",
+    storageBucket: "traveltrek-19d5c.appspot.com",
+    messagingSenderId: "733740279725",
+    appId: "1:733740279725:web:bd30a7ff820d05ec"
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
-var clickCounter = 10000;
+var clickCounter = 0;
 
 window.onload = function () {
 
@@ -206,18 +206,33 @@ function hideNav() {
 function pushData() {
     $("#clickCounter").empty();
     clickCounter++;
-    database.ref().set({
+
+      database.ref("clicks").set({
         clickCount: clickCounter
     });
-    visitor()
+    
+}
+function getSearches(search) {
+    console.log(search)
+    database.ref().push({
+        searchTerm: search,
+    })
 }
 //Shows number of searches
-function visitor() {
-    // var p = $("<p>");
-    $("#clickCounter").prepend(
-        "Number of searches: " + clickCounter
-    );
-}
+database.ref("clicks").on("value", function(snapshot){
+    clickCounter = snapshot.val().clickCount;
+    var display = $("<p>").text("Total Searches: "+snapshot.val().clickCount);
+    $("#clickCounter").append(display);
+
+});
+
+database.ref().limitToLast(5).on("child_added", function (snap) {
+    var item = snap.val();
+    var result = item.searchTerm;
+    var display = $("<p>").text(result);
+    $("#recentSearch").prepend(display);
+});
+
 
 //Getlocation function to find user's Geo Location then store in the browser local storage
 //This will allow the app to show user locations within the user's radius.
@@ -244,11 +259,10 @@ function showPosition(position) {
 //==========================================================================================================
 $("#trendingButton").on("click", function (event) {
     event.preventDefault();
+    
 
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
-   
     var searchInput = $("#search").val();
     if (searchInput === "") {
         var error = $("<h1>").text("Please enter a search term").attr("id", "error");
@@ -261,6 +275,9 @@ $("#trendingButton").on("click", function (event) {
         var replace = googleSearch.replace(" ", "%20");
         tredingAjaxCall(replace);
         hideNav();
+        getSearches(searchInput);
+        pushData();
+        $("#recentSearch").show();
     }
 });
 
@@ -270,10 +287,9 @@ $("#trendingButton").on("click", function (event) {
 
 $("#imageButton").on("click", function (event) {
     event.preventDefault();
-
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
+
 
     var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var imageSearch = $("#search").val();
@@ -287,6 +303,10 @@ $("#imageButton").on("click", function (event) {
         var queryImageURL = "https://pixabay.com/api/?key=" + imgKey + "&q=" + imageSearch + "&image_type=photo"
         imagesAjaxCall(queryImageURL);
         hideNav();
+        getSearches(imageSearch);
+        pushData();
+        $("#recentSearch").show();
+     
     }
 });
 
@@ -295,10 +315,9 @@ $("#imageButton").on("click", function (event) {
 //API USED pixabay free videos by thousands of users online
 $("#videoButton").on("click", function (event) {
     event.preventDefault();
-    
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
+    
 
     var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var videoSearch = $("#search").val();
@@ -307,10 +326,13 @@ $("#videoButton").on("click", function (event) {
         $("#result").append(error)
 
     } else {
-    $("#search2").val(videoSearch);
-    var queryVideoURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch;
-    videosAjaxCall(queryVideoURL);
+        $("#search2").val(videoSearch);
+        var queryVideoURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch;
+        videosAjaxCall(queryVideoURL);
         hideNav();
+        getSearches(videoSearch);
+        pushData();
+        $("#recentSearch").show();
     }
 });
 
@@ -322,7 +344,6 @@ $("#placesButton").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
     getLocation()
 
     //stores latitute and longitude from the local storage
@@ -330,17 +351,20 @@ $("#placesButton").on("click", function (event) {
     var longitude = localStorage.getItem("longitude");
     var places = $("#search").val();
     if (places === "") {
-        var error = $("<h1>").text("Please enter a search term").attr("id","error");
+        var error = $("<h1>").text("Please enter a search term").attr("id", "error");
         $("#result").append(error)
 
     } else {
-    $("#search2").val(places);
-    var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
-    var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + "," + longitude + "&radius=8000&keyword=" + places + "&key=" + googleKey;
+        $("#search2").val(places);
+        var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
+        var google = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latitude + "," + longitude + "&radius=8000&keyword=" + places + "&key=" + googleKey;
 
-    var replace = google.replace(" ", "%20");
-    placesAjaxCall(replace);
-    hideNav();
+        var replace = google.replace(" ", "%20");
+        placesAjaxCall(replace);
+        hideNav();
+        getSearches(places);
+        pushData();
+        $("#recentSearch").show();
     }
 });
 
@@ -356,14 +380,15 @@ $("#trendingButton2").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
+  
 
     var searchInput = $("#search2").val();
     var googleKey = "AIzaSyBRlj_omJsZWTgEIXq9yLePCL_HNfIfdkk"
     var googleSearch = "https://www.googleapis.com/customsearch/v1?key=" + googleKey + "&cx=015376139325119918930:8q0hmzh1doi&q=" + searchInput
     var replace = googleSearch.replace(" ", "%20");
     tredingAjaxCall(replace);
-
+    pushData();
+    getSearches(searchInput);
 });
 
 //===============================================================================================================
@@ -374,12 +399,14 @@ $("#imageButton2").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
+    // pushData()
 
     var imgKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var imageSearch = $("#search2").val();
     var queryImageURL = "https://pixabay.com/api/?key=" + imgKey + "&q=" + imageSearch + "&image_type=photo"
     imagesAjaxCall(queryImageURL);
+    pushData();
+    getSearches(imageSearch);
 });
 
 
@@ -389,12 +416,13 @@ $("#videoButton2").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
+   
     var vidKey = "13124707-0417aa5bfcc30fe6d133d9572"
     var videoSearch = $("#search2").val();
     var queryVideoURL = "https://pixabay.com/api/videos/?key=" + vidKey + "&q=" + videoSearch
     videosAjaxCall(queryVideoURL);
-
+    pushData();
+    getSearches(videoSearch);
 });
 
 
@@ -405,7 +433,7 @@ $("#placesButton2").on("click", function (event) {
     event.preventDefault();
     $("#result").empty();
     // Number of times the page has been researched
-    pushData()
+    
     getLocation()
 
     //stores latitute and longitude from the local storage
@@ -421,4 +449,6 @@ $("#placesButton2").on("click", function (event) {
 
     var replace = google.replace(" ", "%20");
     placesAjaxCall(replace);
+    pushData();
+    getSearches(places);
 });
